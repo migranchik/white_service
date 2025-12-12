@@ -22,7 +22,7 @@ async def profile_menu(callback: CallbackQuery):
     print(subscription.status, SubscriptionStatus.ACTIVE)
     subscription_status_text = "У вас подключена подписка WhiteVPN Premium🐝" if subscription.status == SubscriptionStatus.ACTIVE else "Ваша подписка WhiteVPN Premium истекла💔"
     await callback.message.edit_text(f"{subscription_status_text}\n\n"
-                                     f"Подписка активна до: {subscription.expires_at.strftime("%d.%m.%Y")} \n"
+                                     f"Подписка активна до: {subscription.expires_at.strftime('%d.%m.%Y')} \n"
                                      f"Ниже ваш постоянный ключ - ключ к свободе\n\n"
                                      f"{vpn_account.subscription_link}\n\n"
                                      f"<i>Ваш ID: {referral_stats.user.tg_id}</i> \n"
