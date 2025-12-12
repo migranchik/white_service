@@ -1,0 +1,9 @@
+.venv
+__pycache__
+*.pyc
+.git
+.mypy_cache
+.idea
+.vscode
+postgres_data
+.env

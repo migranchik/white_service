@@ -21,6 +21,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from infra.db.connection import Base
+from infra.db import models
 
 target_metadata = Base.metadata
 
