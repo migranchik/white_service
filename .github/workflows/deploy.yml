@@ -43,8 +43,8 @@ jobs:
 
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }}
 
-            docker compose pull
-            docker compose up -d
+            docker-compose pull
+            docker-compose up -d
 
-            docker compose run --rm api alembic upgrade head
-            docker image prune -f
+            docker-compose run --rm api alembic upgrade head
+            docker-image prune -f
