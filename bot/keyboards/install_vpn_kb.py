@@ -1,4 +1,5 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from configs.settings import settings
 
 def get_install_vpn_keyboard(devices: dict):
     keyboard = []
@@ -13,9 +14,10 @@ def get_install_vpn_keyboard(devices: dict):
 
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-def get_manual_keyboard(devices: dict, device_id):
+def get_manual_keyboard(url_schema: str, subscription_link: str) -> InlineKeyboardMarkup:
+    connection_url = f"{settings.API_LINK}api/v1/redirect_dl?url={url_schema}{subscription_link}"
     keyboard = [
-        [InlineKeyboardButton(text="Подключиться в 1 клик", url=f"https://google.com")],
+        [InlineKeyboardButton(text="Подключиться в 1 клик", url=connection_url)],
         [InlineKeyboardButton(text="Не смог подключить", callback_data=f"support")],
         [InlineKeyboardButton(text="Другие устройства", callback_data="another_device")]
 

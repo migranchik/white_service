@@ -6,6 +6,9 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     bot_token: Optional[str] = None
     BOT_USERNAME: Optional[str] = None
+
+    API_LINK : str | None = "https://api.whiteservice.xyz/"
+
     DB_HOST: str = "localhost"
     DB_PORT: int = 5432
     DB_USER: str = "whitevpn"
