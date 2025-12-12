@@ -7,3 +7,5 @@ __pycache__
 .vscode
 postgres_data
 .env
+whitevpn_deploy
+whitevpn_deploy.pub
