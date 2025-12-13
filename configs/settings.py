@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     bot_token: Optional[str] = None
     BOT_USERNAME: Optional[str] = None
 
+    CHANNEL_ID: int | None = None
+    CHANNEL_URL: str | None = None
+
     API_LINK : str | None = "https://api.whiteservice.xyz/"
 
     DB_HOST: str = "localhost"
