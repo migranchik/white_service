@@ -35,7 +35,7 @@ async def main():
     dp.include_router(user_commands.router)
 
     # admin handlers
-    dp.include_router(get_admin_router(settings.ADMIN_ID))
+    dp.include_router(get_admin_router([settings.ADMIN_ID]))
 
 
     await bot.delete_webhook(drop_pending_updates=True)
