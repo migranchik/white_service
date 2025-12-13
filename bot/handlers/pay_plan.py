@@ -1,4 +1,5 @@
 from aiogram import Router, F
+from aiogram.enums import ParseMode
 from aiogram.types import CallbackQuery, Message
 from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
@@ -38,7 +39,7 @@ async def profile_menu(callback: CallbackQuery, state: FSMContext):
         )
 
     await callback.message.answer("🐝Спасибо, что выбираете нас! \n"
-                                  "Оплачивая подписку Premium, вы соглашаетесь с оферотой",
+                                  "Оплачивая подписку Premium, вы соглашаетесь с <a href='https://telegra.ph/Publichnaya-oferta-na-okazanie-uslug-12-13-4'>оферотой</a>",
                                   reply_markup=pay_plan_kb.get_payment_button(confirmation_url))
 
 
@@ -77,7 +78,8 @@ async def get_user_email(message: Message, state: FSMContext):
         )
 
     await message.answer("🐝Спасибо, что выбираете нас! \n"
-                         "Оплачивая подписку Premium, вы соглашаетесь с оферотой",
-                         reply_markup=pay_plan_kb.get_payment_button(confirmation_url))
+                         "Оплачивая подписку Premium, вы соглашаетесь с <a href='https://telegra.ph/Publichnaya-oferta-na-okazanie-uslug-12-13-4'>оферотой</a>",
+                         reply_markup=pay_plan_kb.get_payment_button(confirmation_url),
+                         parse_mode=ParseMode.HTML)
 
     await state.clear()
