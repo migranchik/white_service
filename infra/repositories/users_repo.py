@@ -1,10 +1,12 @@
 from typing import Optional
 
-from sqlalchemy import select, func, update
+from datetime import datetime, timezone
+
+from sqlalchemy import select, func, update, exists
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
-from infra.db.models import UserBase
+from infra.db.models import UserBase, SubscriptionBase
 
 
 class UsersRepository:
@@ -82,3 +84,35 @@ class UsersRepository:
         await self.session.refresh(user)
         await self.session.flush()  # чтобы у user появился id
         return user
+
+    # for admin panel
+
+    async def get_tg_ids_all(self) -> list[int]:
+        res = await self.session.execute(select(UserBase.tg_id))
+        return [row[0] for row in res.all() if row[0]]
+
+    async def get_tg_ids_active(self) -> list[int]:
+        now = datetime.now(timezone.utc)
+        q = select(UserBase.tg_id).where(
+            exists(
+                select(1).where(
+                    (SubscriptionBase.user_id == UserBase.id) &
+                    (SubscriptionBase.expires_at > now)
+                )
+             )
+        )
+        res = await self.session.execute(q)
+        return [row[0] for row in res.all() if row[0]]
+
+    async def get_tg_ids_inactive(self) -> list[int]:
+        now = datetime.now(timezone.utc)
+        q = select(UserBase.tg_id).where(
+            ~exists(
+                select(1).where(
+                    (SubscriptionBase.user_id == UserBase.id) &
+                    (SubscriptionBase.expires_at > now)
+                )
+            )
+        )
+        res = await self.session.execute(q)
+        return [row[0] for row in res.all() if row[0]]

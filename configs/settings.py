@@ -10,7 +10,10 @@ class Settings(BaseSettings):
     CHANNEL_ID: int | None = None
     CHANNEL_URL: str | None = None
 
+    ADMIN_ID: int | None = None
+
     API_LINK : str | None = "https://api.whiteservice.xyz/"
+
 
     DB_HOST: str = "localhost"
     DB_PORT: int = 5432
