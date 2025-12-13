@@ -104,7 +104,17 @@ class PaymentsService:
             await self.session.commit()
 
         elif status in ("canceled", "expired"):
-            await self.payments_repo.mark_failed(provider_payment_id)
+            payment = await self.payments_repo.mark_failed(provider_payment_id)
+            plan = await self.plans_repo.get_by_id(payment.plan_id)
+
+            # достаем данные для уведомления
+            user = await self.users_repo.get_by_id(payment.user_id)
+            if user:
+                await self.notifications_service.send_payment_failed(
+                    tg_id=user.tg_id,
+                    plan=plan
+                )
+
             await self.session.commit()
 
 

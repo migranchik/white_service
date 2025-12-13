@@ -94,7 +94,7 @@ async def cmd_start(message: types.Message):
 async def main_menu_from_text_keyboard(message: types.Message):
     if not await is_subscribed(bot, message.from_user.id):
         await message.answer(
-            "Чтобы начать пользоваться нашим сервисом, нужно быть подписанным на канал 👇\n\n"
+            "Чтобы пользоваться нашим сервисом, нужно быть подписанным на канал 👇\n\n"
             "Подпишись и нажми «Проверить подписку».",
             reply_markup=subscribe_kb.get_subscribe_keyboard(settings.CHANNEL_URL)
         )
@@ -110,7 +110,7 @@ async def back_to_mai_menu(callback: CallbackQuery):
     await msg.delete()
     if not await is_subscribed(bot, callback.from_user.id):
         await msg.answer(
-            "Чтобы начать пользоваться нашим сервисом, нужно быть подписанным на канал 👇\n\n"
+            "Чтобы пользоваться нашим сервисом, нужно быть подписанным на канал 👇\n\n"
             "Подпишись и нажми «Проверить подписку».",
             reply_markup=subscribe_kb.get_subscribe_keyboard(settings.CHANNEL_URL)
         )
