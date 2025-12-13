@@ -102,7 +102,7 @@ class PaymentsService:
             # 2) начисляем реф. бонус
             user = await self.users_repo.get_by_id(payment.user_id)
 
-            if user and user.referrer_id:
+            if user and user.referred_by_id:
                 # проверяем, не начисляли ли уже
                 existing = await self.referral_rewards_repo.get_by_payment_id(payment.id)
 
@@ -110,14 +110,14 @@ class PaymentsService:
                     reward_amount = int(payment.amount * settings.REFERRAL_PERCENT)  # например 10%
 
                     await self.referral_rewards_repo.create(
-                        referrer_id=user.referrer_id,
+                        referrer_id=user.referred_by_id,
                         referred_user_id=user.id,
                         payment_id=payment.id,
                         amount=reward_amount,
                     )
 
                     await self.users_repo.add_balance(
-                        user_id=user.referrer_id,
+                        user_id=user.referred_by_id,
                         amount=reward_amount,
                     )
 
