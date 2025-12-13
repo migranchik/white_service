@@ -5,8 +5,11 @@ from core.services.notifications_service import NotificationsService
 from core.services.subscriptions_service import SubscriptionsService
 from infra.repositories.payments_repo import PaymentsRepository
 from infra.repositories.plans_repo import PlansRepository
+from infra.repositories.referral_rewards_repo import ReferralRewardsRepository
 from infra.repositories.users_repo import UsersRepository
 from infra.payment_providers.yookassa_api import YooKassaClient
+
+from configs.settings import settings
 
 
 class PaymentsService:
@@ -15,6 +18,7 @@ class PaymentsService:
         self.payments_repo = PaymentsRepository(session)
         self.plans_repo = PlansRepository(session)
         self.users_repo = UsersRepository(session)
+        self.referral_rewards_repo = ReferralRewardsRepository(session)
         self.subscriptions_service = SubscriptionsService(session)
         self.notifications_service = NotificationsService()
 
@@ -92,8 +96,30 @@ class PaymentsService:
                 await self.session.commit()
                 return
 
-            # продляем/создаём подписку
+            # 1) продляем/создаём подписку
             await self.subscriptions_service.apply_success_payment(payment)
+
+            # 2) начисляем реф. бонус
+            user = await self.users_repo.get_by_id(payment.user_id)
+
+            if user and user.referrer_id:
+                # проверяем, не начисляли ли уже
+                existing = await self.referral_rewards_repo.get_by_payment_id(payment.id)
+
+                if not existing:
+                    reward_amount = int(payment.amount * settings.REFERRAL_PERCENT)  # например 10%
+
+                    await self.referral_rewards_repo.create(
+                        referrer_id=user.referrer_id,
+                        referred_user_id=user.id,
+                        payment_id=payment.id,
+                        amount=reward_amount,
+                    )
+
+                    await self.users_repo.add_balance(
+                        user_id=user.referrer_id,
+                        amount=reward_amount,
+                    )
 
             # достаем данные для уведомления
             user = await self.users_repo.get_by_id(payment.user_id)

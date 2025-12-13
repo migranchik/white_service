@@ -5,6 +5,7 @@ from enum import Enum as PyEnum
 
 from sqlalchemy import (
     Integer,
+    Numeric,
     ForeignKey,
     DateTime,
     Enum,
@@ -40,7 +41,8 @@ class ReferralRewardBase(Base):
     )
 
     # сумма вознаграждения
-    amount: Mapped[int] = mapped_column(Integer)
+    amount: Mapped[float] = mapped_column(Numeric(20, 2),
+                                          default=0)
     status: Mapped[ReferralRewardStatus] = mapped_column(
         Enum(ReferralRewardStatus, name="referral_reward_status"),
         default=ReferralRewardStatus.CONFIRMED,

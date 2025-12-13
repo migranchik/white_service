@@ -56,6 +56,14 @@ class UsersRepository:
         result = await self.session.execute(statement)
         return result.scalar_one_or_none()
 
+    async def add_balance(self, user_id: int, amount: int):
+        stmt = (
+            update(UserBase)
+            .where(UserBase.id == user_id)
+            .values(balance=UserBase.balance + amount)
+        )
+        await self.session.execute(stmt)
+
     async def create_from_telegram(
         self,
         tg_id: int,
@@ -74,11 +82,3 @@ class UsersRepository:
         await self.session.refresh(user)
         await self.session.flush()  # чтобы у user появился id
         return user
-
-    async def get_referrals_count(self, user_id: int) -> int:
-        statement = select(func.count(UserBase.id)).where(
-            UserBase.referred_by_id == user_id
-        )
-        result = await self.session.execute(statement)
-
-        return result.scalar_one() or 0

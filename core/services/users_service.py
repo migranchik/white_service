@@ -51,7 +51,7 @@ class UsersService:
 
     async def get_user_by_tg_id(self, tg_id: int) -> UserBase | None:
         """
-        Возвращает ref_code пользователя
+        Возвращает пользователя по Telegram ID
         """
         user = await self.repo.get_by_tg_id(tg_id)
         return user

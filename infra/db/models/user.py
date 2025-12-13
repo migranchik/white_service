@@ -1,7 +1,7 @@
 from ..connection import Base
 from datetime import datetime
 
-from sqlalchemy import BigInteger, String, DateTime, ForeignKey, Integer
+from sqlalchemy import BigInteger, String, DateTime, ForeignKey, Integer, Numeric
 from sqlalchemy.orm import (Mapped,
                             mapped_column,
                             relationship)
@@ -23,8 +23,7 @@ class UserBase(Base):
     ref_code: Mapped[str] = mapped_column(String(32), unique=True, index=True)
 
     # баланс реферальных начислений
-    ref_balance: Mapped[int] = mapped_column(Integer, default=0)
-    ref_total_earned: Mapped[int] = mapped_column(Integer, default=0)
+    ref_balance: Mapped[float] = mapped_column(Numeric(12, 2), default=0)
 
     # id пригласившего
     referred_by_id: Mapped[int] = mapped_column(
