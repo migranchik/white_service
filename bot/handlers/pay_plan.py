@@ -41,7 +41,8 @@ async def profile_menu(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer("🐝Спасибо, что выбираете нас! \n"
                                   "Оплачивая подписку Premium, вы соглашаетесь с <a href='https://telegra.ph/Publichnaya-oferta-na-okazanie-uslug-12-13-4'>оферотой</a>",
                                   reply_markup=pay_plan_kb.get_payment_button(confirmation_url),
-                                  parse_mode=ParseMode.HTML)
+                                  parse_mode=ParseMode.HTML,
+                                  disable_web_page_preview=True)
 
 
     await callback.answer()
@@ -81,6 +82,7 @@ async def get_user_email(message: Message, state: FSMContext):
     await message.answer("🐝Спасибо, что выбираете нас! \n"
                          "Оплачивая подписку Premium, вы соглашаетесь с <a href='https://telegra.ph/Publichnaya-oferta-na-okazanie-uslug-12-13-4'>оферотой</a>",
                          reply_markup=pay_plan_kb.get_payment_button(confirmation_url),
-                         parse_mode=ParseMode.HTML)
+                         parse_mode=ParseMode.HTML,
+                         disable_web_page_preview=True)
 
     await state.clear()
