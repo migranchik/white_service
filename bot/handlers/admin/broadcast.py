@@ -11,6 +11,7 @@ from bot.keyboards.admin.broadcast import (
     broadcast_confirm_kb,
 )
 
+from infra.db.connection import async_session_maker
 from infra.repositories.users_repo import UsersRepository  # твой путь
 
 admin_broadcast_router = Router()
@@ -98,7 +99,7 @@ async def cancel_cmd(message: Message, state: FSMContext):
 
 
 @admin_broadcast_router.callback_query(AdminBroadcast.waiting_confirm, F.data == "broadcast:send")
-async def broadcast_send(call: CallbackQuery, state: FSMContext, session: AsyncSession, bot):
+async def broadcast_send(call: CallbackQuery, state: FSMContext, bot):
     data = await state.get_data()
     text = data.get("broadcast_text")
     segment = data.get("broadcast_segment", "all")
@@ -107,14 +108,15 @@ async def broadcast_send(call: CallbackQuery, state: FSMContext, session: AsyncS
         await call.answer("Нет текста рассылки", show_alert=True)
         return
 
-    users_repo = UsersRepository(session)
+    async with async_session_maker() as session:
+        users_repo = UsersRepository(session)
 
-    if segment == "active":
-        tg_ids = await users_repo.get_tg_ids_active()
-    elif segment == "inactive":
-        tg_ids = await users_repo.get_tg_ids_inactive()
-    else:
-        tg_ids = await users_repo.get_tg_ids_all()
+        if segment == "active":
+            tg_ids = await users_repo.get_tg_ids_active()
+        elif segment == "inactive":
+            tg_ids = await users_repo.get_tg_ids_inactive()
+        else:
+            tg_ids = await users_repo.get_tg_ids_all()
 
     total = len(tg_ids)
     await call.message.edit_text(f"🚀 Начинаю рассылку… получателей: {total}")
