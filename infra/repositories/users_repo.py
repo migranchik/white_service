@@ -62,7 +62,7 @@ class UsersRepository:
         stmt = (
             update(UserBase)
             .where(UserBase.id == user_id)
-            .values(balance=UserBase.balance + amount)
+            .values(balance=UserBase.balance+amount)
         )
         await self.session.execute(stmt)
 
