@@ -72,12 +72,7 @@ class UsersService:
             raise ValueError("User not found")  # или создай, как у тебя задумано
         total_referrals = await self.repo.get_referrals_count(user.id)
 
-        return ReferralStats(
-            user=user,
-            total_referrals=total_referrals,
-            balance=user.ref_balance,
-            total_earned=user.ref_total_earned,
-        )
+        return total_referrals
 
     async def get_email(self, tg_id: int) -> InstrumentedAttribute[str] | None:
         user = await self.repo.get_by_tg_id(tg_id)

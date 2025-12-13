@@ -10,6 +10,7 @@ class ProfileService:
         user = await self.users_service.get_user_by_tg_id(user_tg_id)
         subscription = user.subscription
         vpn_account = user.vpn_account
+        referral_count = await self.users_service.get_referral_stats(user_tg_id)
         referral_stats = await self.referral_repo.get_stats_for_user(user.id)
 
         return {
@@ -18,7 +19,7 @@ class ProfileService:
             "subscription_status": subscription.status,
             "subscription_expire": subscription.expires_at,
             "balance": user.ref_balance,
-            "referrals_count": referral_stats["total_count"],
+            "referrals_count": referral_count,
             "referrals_income": referral_stats["total_amount"],
             "subscription_until": user,
         }

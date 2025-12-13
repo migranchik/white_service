@@ -116,3 +116,11 @@ class UsersRepository:
         )
         res = await self.session.execute(q)
         return [row[0] for row in res.all() if row[0]]
+
+    async def get_referrals_count(self, user_id: int) -> int:
+        statement = select(func.count(UserBase.id)).where(
+            UserBase.referred_by_id == user_id
+        )
+        result = await self.session.execute(statement)
+
+        return result.scalar_one() or 0
