@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 from remnawave.models import (CreateUserRequestDto,
                               UserResponseDto,
-                              UpdateUserResponseDto)
+                              UpdateUserRequestDto)
 
 from .client import get_remnawave_client
 
@@ -43,7 +43,9 @@ class RemnawaveGateway:
             Продлевает дату истечения юзера в Remnawave, ничего не возвращает.
         """
         response = await self._client.users.update_user(
-            uuid=panel_uuid,
-            expireAt=new_expires,
+            UpdateUserRequestDto(
+                uuid=panel_uuid,
+                expire_at=new_expires,
+            )
         )
 
