@@ -40,7 +40,8 @@ async def profile_menu(callback: CallbackQuery, state: FSMContext):
 
     await callback.message.answer("🐝Спасибо, что выбираете нас! \n"
                                   "Оплачивая подписку Premium, вы соглашаетесь с <a href='https://telegra.ph/Publichnaya-oferta-na-okazanie-uslug-12-13-4'>оферотой</a>",
-                                  reply_markup=pay_plan_kb.get_payment_button(confirmation_url))
+                                  reply_markup=pay_plan_kb.get_payment_button(confirmation_url),
+                                  parse_mode=ParseMode.HTML)
 
 
     await callback.answer()
