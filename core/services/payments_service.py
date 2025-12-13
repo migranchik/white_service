@@ -2,11 +2,11 @@ import uuid
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.services.notifications_service import NotificationsService
+from core.services.subscriptions_service import SubscriptionsService
 from infra.repositories.payments_repo import PaymentsRepository
 from infra.repositories.plans_repo import PlansRepository
 from infra.repositories.users_repo import UsersRepository
 from infra.payment_providers.yookassa_api import YooKassaClient
-from core.services.subscriptions_service import SubscriptionsService
 
 
 class PaymentsService:

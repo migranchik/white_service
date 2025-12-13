@@ -1,7 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from remnawave.models import (CreateUserRequestDto,
-                              UserResponseDto, )
+                              UserResponseDto,
+                              UpdateUserResponseDto)
 
 from .client import get_remnawave_client
 
@@ -29,4 +30,20 @@ class RemnawaveGateway:
         )
         print(response)
         return response
+
+    # ----- Создаем новую подписку(то есть продлеваем) ---
+    async def extend_panel_user(
+            self,
+            panel_uuid,
+            add_days,
+    ):
+        new_expires = datetime.now(timezone.utc) + timedelta(days=add_days)
+
+        """
+            Продлевает дату истечения юзера в Remnawave, ничего не возвращает.
+        """
+        response = await self._client.users.update_user(
+            uuid=panel_uuid,
+            expireAt=new_expires,
+        )
 

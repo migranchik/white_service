@@ -44,13 +44,13 @@ async def cmd_start(message: types.Message):
 
         vpn_account = await vpn_account_service.register_vpn_account(
             user=user,
-            external_id=str(remnawave_user.short_uuid),
+            external_id=str(remnawave_user.uuid),
             subscription_link=SubLinkCreator.create(remnawave_user.short_uuid),
         )
 
         await subscriptions_service.activate_or_extend(
             user_id=user.id,
-            vpn_account_id=vpn_account.id,
+            vpn_account=vpn_account,
             duration_days=7
         )
 
