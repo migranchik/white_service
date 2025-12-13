@@ -92,6 +92,8 @@ class PaymentsService:
 
         if status == "succeeded":
             payment = await self.payments_repo.mark_success(provider_payment_id)
+            plan = await self.plans_repo.get_by_id(payment.plan_id)
+
             if not payment:
                 await self.session.commit()
                 return
@@ -125,7 +127,8 @@ class PaymentsService:
             user = await self.users_repo.get_by_id(payment.user_id)
             if user:
                 await self.notifications_service.send_payment_success(
-                    tg_id=user.tg_id
+                    tg_id=user.tg_id,
+                    plan=plan,
                 )
             await self.session.commit()
 

@@ -1,16 +1,16 @@
+from urllib.parse import quote
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-
 def get_referral_menu(referral_link: str):
+    share_url = (
+        "https://t.me/share/url"
+        f"?url={quote(referral_link, safe='')}"
+        f"&text={quote('Попробуй установить WhiteVPN, глушилки интернета обходит, быстро и надежно работает, короче кайф', safe='')}"
+    )
+
     keyboard = [
-        [InlineKeyboardButton(text="Пригласить",
-                              url=f"https://t.me/share/url?url={referral_link}&text=Попробуй установить WhiteVPN, "
-                                  f"глушилки интернета обходит, быстро и надежно работает, "
-                                  f"короче кайф")],
+        [InlineKeyboardButton(text="Пригласить", url=share_url)],
         [InlineKeyboardButton(text="⚡️Установить VPN⚡️", callback_data="install_vpn")],
         [InlineKeyboardButton(text="← Назад", callback_data="back_to_main_menu")],
     ]
-
-    referral_menu_keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)
-
-    return referral_menu_keyboard
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
