@@ -17,7 +17,7 @@ class ProfileService:
             "subscription_link": vpn_account.subscription_link,
             "subscription_status": subscription.status,
             "subscription_expire": subscription.expires_at,
-            "balance": user.balance,
+            "balance": user.ref_balance,
             "referrals_count": referral_stats["total_count"],
             "referrals_income": referral_stats["total_amount"],
             "subscription_until": user,
