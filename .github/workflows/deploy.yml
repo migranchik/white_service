@@ -41,10 +41,11 @@ jobs:
             set -e
             cd /var/www/whitevpn
 
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }}
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ github.repository_owner }}" --password-stdin
 
             docker-compose pull
             docker-compose up -d
 
             docker-compose run --rm api alembic upgrade head
             docker image prune -f
+      
